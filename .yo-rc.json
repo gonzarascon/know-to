@@ -1,0 +1,14 @@
+{
+  "generator-next-basic": {
+    "promptValues": {
+      "name": "know-to",
+      "version": "1.0.0",
+      "description": "Know to Frontend",
+      "author_name": "Gonzalo",
+      "author_email": "gonzarascon@gmail.com",
+      "author_url": "gonzarascon.com",
+      "repo_url": "https://github.com/gonzarascon/know-to",
+      "git_url": "git@github.com:gonzarascon/know-to.git"
+    }
+  }
+}
