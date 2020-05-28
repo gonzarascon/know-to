@@ -34,10 +34,11 @@ function HeaderDesktop() {
               height: 122px;
               align-items: center;
               justify-content: space-between;
+              padding: 25px;
             }
 
             &-logo {
-              width: 192px;
+              width: 150px;
               height: 38.59px;
 
               a {

@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { HomeContainer } from 'containers';
+
 function Home() {
-  return <h1>Know to</h1>;
+  return <HomeContainer />;
 }
 
 export default Home;
