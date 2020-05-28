@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es6",
+    "module": "commonjs",
+    "paths": {
+      "@components/*": ["./components/*"],
+      "@constants/*": ["./lib/constants/*"],
+      "@utils/*": ["./lib/utils/*"],
+      "@lib/*": ["./lib/*"],
+      "@containers/*": ["./containers/*"]
+    }
+  },
+  "include": ["./**/*"]
+}
