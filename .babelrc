@@ -13,9 +13,8 @@
     [
       "module-resolver",
       {
-        "root": ["./"],
+        "root": ["."],
         "alias": {
-          "components": "./components",
           "lib": "./lib",
           "containers": "./containers",
           "utils": "./lib/utils",

@@ -1,6 +1,8 @@
-import React from "react";
-import Head from "next/head";
-import { globalStyles } from "lib/globalStyle";
+import React from 'react';
+import Head from 'next/head';
+import { globalStyles } from 'lib/globalStyle';
+
+import { Layout } from 'containers';
 
 function MyApp({ Component, pageProps }) {
   return (
