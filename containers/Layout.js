@@ -21,6 +21,20 @@ function Layout({ children }) {
             margin: 0 auto;
             min-height: 100vh;
             padding: 25px;
+            padding-bottom: 50px;
+            background: linear-gradient(
+                to bottom,
+                ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 0%,
+                ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 100%
+              ),
+              url('./images/bg-image-default.png') no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+
+            @media ${media.mediumDevice} {
+              padding-bottom: 25px;
+              background: none;
+            }
 
             &__background-desktop {
               display: none;
@@ -49,10 +63,14 @@ function Layout({ children }) {
             height: 100%;
             width: 100%;
 
-            margin-top: 122px;
+            margin-top: 100px;
 
             display: flex;
             flex-direction: column;
+
+            @media ${media.mediumDevice} {
+              margin-top: 122px;
+            }
           }
         `}
       </style>

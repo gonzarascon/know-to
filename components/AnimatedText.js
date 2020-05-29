@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { media } from 'constants';
 import { pxToRem } from 'utils/helpers';
 
-function AnimatedText({ children }) {
+function AnimatedText({ children, className }) {
   const variants = {
     hide: {
       opacity: 0,
@@ -22,7 +22,7 @@ function AnimatedText({ children }) {
   return (
     <>
       <motion.p
-        className="animated-text"
+        className={`animated-text ${className}`}
         variants={variants}
         initial="hide"
         animate="show"
@@ -34,9 +34,7 @@ function AnimatedText({ children }) {
           :global(.animated-text) {
             font-family: var(--f-OpenSans);
             font-weight: var(--f-light);
-            @media ${media.mediumDevice} {
-              font-size: ${pxToRem(25)};
-            }
+            font-size: ${pxToRem(25)};
           }
         `}
       </style>

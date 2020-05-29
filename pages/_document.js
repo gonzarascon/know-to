@@ -1,12 +1,19 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import flush from "styled-jsx/server";
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import flush from 'styled-jsx/server';
+import { mediaStyles } from 'utils/mediaRender';
 
 class MyDocument extends Document {
   render() {
     const styles = flush();
     return (
       <Html>
-        <Head>{styles}</Head>
+        <Head>
+          <style
+            type="text/css"
+            dangerouslySetInnerHTML={{ __html: mediaStyles }}
+          />
+          {styles}
+        </Head>
         <body>
           <Main />
           <NextScript />
