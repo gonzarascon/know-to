@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { media } from 'constants';
-import { pxToRem } from 'utils/helpers';
 import { Media } from 'utils/mediaRender';
 
 import { AnimatedText, Button } from 'components';

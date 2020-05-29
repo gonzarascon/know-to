@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>My site</title>
+        <title>KnowTo — Inicios con React JS </title>
       </Head>
       <Layout>
         <Component {...pageProps} />
