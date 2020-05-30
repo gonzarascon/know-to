@@ -27,7 +27,7 @@ function Layout({ children }) {
                 ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 0%,
                 ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 100%
               ),
-              url('./images/bg-image-default.png') no-repeat;
+              url('/images/bg-image-default.png') no-repeat;
             background-attachment: fixed;
             background-position: center center;
 
@@ -50,7 +50,7 @@ function Layout({ children }) {
                     ${Colors.darkBlue200.setAlpha(1).toRGB()} 35%,
                     ${Colors.darkBlue200.setAlpha(0).toRGB()} 65%
                   ),
-                  url('./images/bg-image-default.png') no-repeat;
+                  url('/images/bg-image-default.png') no-repeat;
                 background-position: 20% center;
                 z-index: -1;
                 background-size: cover;

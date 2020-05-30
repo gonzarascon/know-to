@@ -11,7 +11,7 @@ function HeaderDesktop() {
           <h1 className="desktop-header__logo">
             <Link href="/">
               <a className="desktop-header__link">
-                <SVG src="./images/svg/logo-dark.svg" title="KnowTo" />
+                <SVG src="/images/svg/logo-dark.svg" title="KnowTo" />
               </a>
             </Link>
           </h1>
