@@ -6,7 +6,7 @@ import markdownTest from 'constants/markdownTest';
 import { media } from 'constants';
 import { pxToRem } from 'utils/helpers';
 
-import { Button, Markdown } from 'components';
+import { Button, Markdown, ProgressBar } from 'components';
 import { UniqueAnswer } from 'components/LectureQuestionInputs';
 
 function Lecture() {
@@ -14,6 +14,10 @@ function Lecture() {
     <>
       <section className="wrapper wrapper--lecture">
         <div className="wrapper__content">
+          <div className="wrapper__progress-container">
+            <span className="wrapper__progress-label">Progreso</span>
+            <ProgressBar percentage={50} />
+          </div>
           <h3 className="wrapper__lecture-title">
             Clase 1: Configuración del entorno.
           </h3>
@@ -38,6 +42,21 @@ function Lecture() {
               & .wrapper__lecture-title {
                 font-size: ${pxToRem(30)};
                 font-family: var(--f-Rubik);
+              }
+
+              & .wrapper__progress-container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                margin-bottom: 50px;
+              }
+
+              & .wrapper__progress-label {
+                color: var(--gray-100);
+                font-size: ${pxToRem(18)};
+                margin-right: 30px;
               }
 
               & .wrapper_link {
