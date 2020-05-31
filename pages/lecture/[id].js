@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { MediaContextProvider } from 'utils/mediaRender';
 
 import { LectureContainer } from 'containers';
 
@@ -13,9 +12,7 @@ function LectureId() {
           href="https://highlightjs.org/static/demo/styles/night-owl.css"
         />
       </Head>
-      <MediaContextProvider>
-        <LectureContainer />
-      </MediaContextProvider>
+      <LectureContainer />
     </>
   );
 }
