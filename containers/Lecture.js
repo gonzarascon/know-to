@@ -7,6 +7,7 @@ import { media } from 'constants';
 import { pxToRem } from 'utils/helpers';
 
 import { Button, Markdown } from 'components';
+import { UniqueAnswer } from 'components/LectureQuestionInputs';
 
 function Lecture() {
   return (
@@ -16,10 +17,9 @@ function Lecture() {
           <h3 className="wrapper__lecture-title">
             Clase 1: Configuración del entorno.
           </h3>
-          <article className="wrapper__lecture-content">
-            <Markdown source={markdownTest} />
-          </article>
-          <Button className="wrapper_submit">Inciar sesión</Button>
+          <Markdown source={markdownTest} />
+          <UniqueAnswer />
+          <Button className="wrapper_submit">Siguiente clase</Button>
         </div>
       </section>
       <style jsx>
@@ -31,18 +31,13 @@ function Lecture() {
 
               & .wrapper__content {
                 @media ${media.mediumDevice} {
-                  width: 40%;
+                  width: 50%;
                 }
               }
 
               & .wrapper__lecture-title {
                 font-size: ${pxToRem(30)};
                 font-family: var(--f-Rubik);
-              }
-
-              & .wrapper__lecture-content {
-                font-size: ${pxToRem(18)};
-                margin-top: 20px;
               }
 
               & .wrapper_link {

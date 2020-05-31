@@ -47,7 +47,7 @@ function heading({ level, children }) {
 }
 
 heading.propTypes = {
-  value: PropTypes.string.isRequired,
+  children: PropTypes.array.isRequired,
 };
 
 export default heading;
