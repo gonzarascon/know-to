@@ -18,7 +18,8 @@
           "lib": "./lib",
           "containers": "./containers",
           "utils": "./lib/utils",
-          "constants": "./lib/constants"
+          "constants": "./lib/constants",
+          "store": "./store"
         }
       }
     ]
