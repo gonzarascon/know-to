@@ -2,8 +2,6 @@ import React from 'react';
 import Head from 'next/head';
 import { globalStyles } from 'lib/globalStyle';
 
-import { wrapper } from 'store/store';
-
 import { Layout } from 'containers';
 
 function MyApp({ Component, pageProps }) {
@@ -22,4 +20,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;
