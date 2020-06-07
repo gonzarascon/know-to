@@ -1,17 +1,17 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { CongratulationsContainer } from 'containers';
+import { Layout, CongratulationsContainer } from 'containers';
 
 function LectureId() {
   return (
-    <>
+    <Layout>
       <Head>
         <title>¡Felicitaciones! — KnowTo</title>
       </Head>
 
       <CongratulationsContainer />
-    </>
+    </Layout>
   );
 }
 

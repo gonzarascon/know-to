@@ -1,21 +1,14 @@
 import React from 'react';
-import Head from 'next/head';
-import { globalStyles } from 'lib/globalStyle';
 
-import { Layout } from 'containers';
+import { globalStyles } from 'lib/globalStyle';
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Head>
-        <title>KnowTo — Inicios con React JS </title>
-      </Head>
-      <Layout>
-        <Component {...pageProps} />
-        <style jsx global>
-          {globalStyles}
-        </style>
-      </Layout>
+      <Component {...pageProps} />
+      <style jsx global>
+        {globalStyles}
+      </style>
     </>
   );
 }

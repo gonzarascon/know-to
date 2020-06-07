@@ -9,7 +9,7 @@ import { pxToRem } from 'utils/helpers';
 import { Button, Markdown, ProgressBar } from 'components';
 import { UniqueAnswer } from 'components/LectureQuestionInputs';
 
-function Lecture() {
+function Lecture({ title, content }) {
   return (
     <>
       <section className="wrapper wrapper--lecture">
@@ -18,10 +18,8 @@ function Lecture() {
             <span className="wrapper__progress-label">Progreso</span>
             <ProgressBar percentage={50} />
           </div>
-          <h3 className="wrapper__lecture-title">
-            Clase 1: Configuración del entorno.
-          </h3>
-          <Markdown source={markdownTest} />
+          <h3 className="wrapper__lecture-title">{title}</h3>
+          <Markdown source={content} />
           <UniqueAnswer />
           <Button className="wrapper_submit">Siguiente clase</Button>
         </div>

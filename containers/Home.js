@@ -6,26 +6,23 @@ import { Media } from 'utils/mediaRender';
 
 import { AnimatedText, Button } from 'components';
 
-function Home() {
+function Home({ courseTitle, courseDescription, coursePortada }) {
   return (
     <>
       <section className="wrapper wrapper--home">
         <div className="wrapper__content">
           <Media at="xs">
             <div className="wrapper__mobile-picture-container">
-              {' '}
               <img
                 className="wrapper__mobile-picutre"
-                src="./images/bg-image-default.png"
-                alt="Banner"
+                src={coursePortada.url}
+                alt={coursePortada.alt}
               />
             </div>
           </Media>
-          <h2 className="wrapper__big-heading">Inicios en React JS</h2>
+          <h2 className="wrapper__big-heading">{courseTitle}</h2>
           <AnimatedText className="wrapper__description">
-            En este curso aprenderás los fundamentos sobre la librería React.js
-            la cual te permitirá crear sitios web y aplicaciones versátiles y
-            fluidas.
+            {courseDescription}
           </AnimatedText>
           <Button>Comenzar</Button>
         </div>
