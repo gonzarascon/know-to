@@ -6,8 +6,6 @@ import { Layout, HomeContainer } from 'containers';
 import { getCurso } from 'lib/api/getCurso';
 
 function Home({ courseData }) {
-  console.log('courseData', courseData);
-
   const { title: courseTitle, description, portada } = courseData;
 
   useEffect(() => {

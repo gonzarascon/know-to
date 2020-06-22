@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useSWR } from 'swr';
+import { parseCookies } from 'nookies';
 
 import HeaderDesktop from './HeaderDesktop';
 import HeaderMobile from './HeaderMobile';
