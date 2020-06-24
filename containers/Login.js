@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
@@ -8,14 +8,33 @@ import { pxToRem } from 'utils/helpers';
 import { Button, FormInput } from 'components';
 
 function Login() {
+  const [loginForm, setLoginForm] = useState({
+    email: null,
+    password: null,
+    formError: false,
+  });
+
+  function handleInputChange(value, key) {
+    setLoginForm({ ...loginForm, [key]: value, formError: false });
+  }
+
+  // TODO: Handle button submit and redirect
+
   return (
     <>
       <section className="wrapper wrapper--login">
         <div className="wrapper__content">
           <h2 className="wrapper__big-heading">Inicia sesión</h2>
           <form className="wrapper_login-form">
-            <FormInput label="E-mail" placeholder="usuario@ejemplo.com" />
-            <FormInput label="Contraseña" />
+            <FormInput
+              label="E-mail"
+              placeholder="usuario@ejemplo.com"
+              onChange={(e) => handleInputChange(e.target.value, 'email')}
+            />
+            <FormInput
+              label="Contraseña"
+              onChange={(e) => handleInputChange(e.target.value, 'password')}
+            />
             <a className="wrapper_link">¿Olvidaste tu contraseña?</a>
             <Button className="wrapper_submit">Inciar sesión</Button>
           </form>

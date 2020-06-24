@@ -3,7 +3,11 @@ import Link from 'next/link';
 
 import SVG from 'react-inlinesvg';
 
+import { useUserState } from 'contexts/UserContext';
+
 function HeaderDesktop() {
+  const { userData } = useUserState();
+
   return (
     <>
       <header className="desktop-header">
@@ -15,15 +19,17 @@ function HeaderDesktop() {
               </a>
             </Link>
           </h1>
-          <span>
-            <Link href="/login">
-              <a className="desktop-header__link">Inicia sesión</a>
-            </Link>{' '}
-            o{' '}
-            <Link href="/sign-up">
-              <a className="desktop-header__link">regístrate</a>
-            </Link>
-          </span>
+          {!userData && (
+            <span>
+              <Link href="/login">
+                <a className="desktop-header__link">Inicia sesión</a>
+              </Link>{' '}
+              o{' '}
+              <Link href="/sign-up">
+                <a className="desktop-header__link">regístrate</a>
+              </Link>
+            </span>
+          )}
         </div>
       </header>
       <style jsx>

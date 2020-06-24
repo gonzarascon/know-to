@@ -13,7 +13,7 @@ function Home({ courseData }) {
     if (courseData !== {} || JSON.stringify(courseData) !== prevCourseData) {
       localStorage.setItem('courseData', JSON.stringify(courseData));
     }
-  }, [courseData]);
+  }, []);
 
   return (
     <Layout backgroundImage={portada.url}>
@@ -31,7 +31,7 @@ function Home({ courseData }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const courseData = (await getCurso()) || {};
 
   return {

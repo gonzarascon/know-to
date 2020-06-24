@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Colors, media } from 'constants';
@@ -6,6 +6,19 @@ import { Colors, media } from 'constants';
 import { Header } from 'components';
 
 function Layout({ children, backgroundImage }) {
+  const [mainImage, setMainImage] = useState(null);
+
+  useEffect(() => {
+    if (!backgroundImage) {
+      // Check for backgroundImage in localstorage
+      const { portada } = JSON.parse(localStorage.getItem('courseData'));
+
+      setMainImage(portada.url);
+    } else {
+      setMainImage(backgroundImage);
+    }
+  }, []);
+
   return (
     <>
       <div className="app-wrapper">
@@ -27,7 +40,7 @@ function Layout({ children, backgroundImage }) {
                 ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 0%,
                 ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 100%
               ),
-              url(${backgroundImage}) no-repeat;
+              url(${mainImage}) no-repeat;
             background-attachment: fixed;
             background-position: center center;
 
@@ -50,7 +63,7 @@ function Layout({ children, backgroundImage }) {
                     ${Colors.darkBlue200.setAlpha(1).toRGB()} 35%,
                     ${Colors.darkBlue200.setAlpha(0).toRGB()} 65%
                   ),
-                  url(${backgroundImage}) no-repeat;
+                  url(${mainImage}) no-repeat;
                 background-position: 20% center;
                 z-index: -1;
                 background-size: cover;

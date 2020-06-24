@@ -19,7 +19,8 @@
           "containers": "./containers",
           "utils": "./lib/utils",
           "constants": "./lib/constants",
-          "store": "./store"
+          "store": "./store",
+          "contexts": "./contexts"
         }
       }
     ]

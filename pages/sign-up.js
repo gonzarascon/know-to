@@ -1,16 +1,16 @@
 import React from 'react';
 import Head from 'next/head';
 
-import { SignupContainer } from 'containers';
+import { Layout, SignupContainer } from 'containers';
 
 function SignUp() {
   return (
-    <>
+    <Layout>
       <Head>
         <title> Crea una cuenta — KnowTo</title>
       </Head>
       <SignupContainer />
-    </>
+    </Layout>
   );
 }
 
