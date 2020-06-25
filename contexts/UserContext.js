@@ -32,7 +32,7 @@ export function UserReducer(state, action) {
  */
 export function setUserAction(userData) {
   if (dev) {
-    console.log(SET_USER, user);
+    console.log(SET_USER, userData);
   }
 
   localStorage.setItem('userData', JSON.stringify(userData));

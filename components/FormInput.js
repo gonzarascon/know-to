@@ -32,6 +32,10 @@ function FormInput({ label, ...props }) {
 
               font-size: ${pxToRem(20)};
 
+              &[type='password'] {
+                font-size: ${pxToRem(25)};
+              }
+
               &:focus {
                 outline: none;
                 box-shadow: 0 0 0px 3px var(--action-primary);
