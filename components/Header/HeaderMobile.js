@@ -2,11 +2,15 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 
+import Avatar from 'react-avatar';
 import SVG from 'react-inlinesvg';
-
 import { UserOutlined } from '@ant-design/icons';
 
+import { useUserState } from 'contexts/UserContext';
+
 function HeaderMobile() {
+  const { userData } = useUserState();
+
   function redirectToLogin() {
     Router.push('/login');
   }
@@ -22,12 +26,27 @@ function HeaderMobile() {
               </a>
             </Link>
           </h1>
-          <button
-            className="mobile-header__user-button"
-            onClick={() => redirectToLogin()}
-          >
-            <UserOutlined className="mobile-header__user-icon" />
-          </button>
+          {!userData && (
+            <button
+              className="mobile-header__user-button"
+              onClick={() => redirectToLogin()}
+            >
+              <UserOutlined className="mobile-header__user-icon" />
+            </button>
+          )}
+
+          {userData && (
+            <div className="mobile-header__avatar-container">
+              <Avatar
+                name={userData.username}
+                src={userData.foto_de_perfil.url}
+                round
+                size="45px"
+                alt={userData.username}
+                className="mobile-header__avatar"
+              />
+            </div>
+          )}
         </div>
       </header>
       <style jsx>
@@ -87,6 +106,11 @@ function HeaderMobile() {
                   height: 100%;
                 }
               }
+            }
+
+            & :global(.mobile-header__avatar) {
+              object-fit: cover;
+              object-position: center;
             }
           }
         `}

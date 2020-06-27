@@ -2,6 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 
 import SVG from 'react-inlinesvg';
+import Avatar from 'react-avatar';
+import { DownOutlined } from '@ant-design/icons';
+
+import { Colors } from 'constants';
+import { pxToRem } from 'utils/helpers';
 
 import { useUserState } from 'contexts/UserContext';
 
@@ -29,6 +34,22 @@ function HeaderDesktop() {
                 <a className="desktop-header__link">regístrate</a>
               </Link>
             </span>
+          )}
+          {userData && (
+            <div className="desktop-header__avatar-container">
+              <Avatar
+                name={userData.username}
+                src={userData.foto_de_perfil.url}
+                round
+                size="35px"
+                alt={userData.username}
+                className="desktop-header__avatar"
+              />
+              <span className="desktop-header__username">
+                {userData.username}
+              </span>
+              <DownOutlined className="desktop-header__menu-arrow" />
+            </div>
           )}
         </div>
       </header>
@@ -70,6 +91,44 @@ function HeaderDesktop() {
 
             & .desktop-header__link {
               text-decoration: none;
+            }
+
+            &__avatar-container {
+              display: flex;
+              justify-content: space-evenly;
+              align-items: center;
+              border-radius: 8px;
+              padding: 10px;
+
+              @media (hover: hover) {
+                &:hover {
+                  background-color: ${Colors.actionPrimary
+                    .setAlpha(0.1)
+                    .setLightness(0.6)
+                    .toCSS()};
+                  cursor: pointer;
+
+                  & :global(.desktop-header__menu-arrow) {
+                    color: var(--white);
+                  }
+                }
+              }
+            }
+
+            & :global(.desktop-header__avatar) {
+              object-fit: cover;
+              object-position: center;
+            }
+
+            &__username {
+              display: block;
+              margin: 0 15px;
+              font-family: var(--f-Rubik);
+              font-size: ${pxToRem(20)};
+            }
+
+            & :global(.desktop-header__menu-arrow) {
+              color: var(--action-primary);
             }
           }
         `}
