@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Router from 'next/router';
 
 import { media } from 'constants';
 import { Media } from 'utils/mediaRender';
 
+import { useUserState } from 'contexts/UserContext';
 import { AnimatedText, Button } from 'components';
 
 function Home({ courseTitle, courseDescription, coursePortada }) {
+  const { userData } = useUserState();
+
+  function handleStartClick() {
+    if (userData) {
+      Router.push('/lecture/1');
+    } else {
+      Router.push('/login');
+    }
+  }
+
   return (
     <>
       <section className="wrapper wrapper--home">
@@ -24,7 +36,7 @@ function Home({ courseTitle, courseDescription, coursePortada }) {
           <AnimatedText className="wrapper__description">
             {courseDescription}
           </AnimatedText>
-          <Button>Comenzar</Button>
+          <Button onClick={() => handleStartClick()}>Comenzar</Button>
         </div>
       </section>
       <style jsx>

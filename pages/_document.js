@@ -13,6 +13,7 @@ class MyDocument extends Document {
             dangerouslySetInnerHTML={{ __html: mediaStyles }}
           />
           {styles}
+          <title>Know-To</title>
         </Head>
         <body>
           <Main />

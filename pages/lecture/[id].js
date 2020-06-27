@@ -2,14 +2,14 @@ import React from 'react';
 import Head from 'next/head';
 
 import { Layout, LectureContainer } from 'containers';
-import { getCurso } from 'lib/api/getCurso';
 import { getLectureById } from 'lib/api/lecture';
-import { getLecturesSlugs } from '../../lib/api/lecture';
 
-function LectureId({ lectureData, coursePortada }) {
+function LectureId({ lectureData }) {
   console.log('lectureData', lectureData);
+
+  // TODO: Handle page when lectureData comes empty
   return (
-    <Layout backgroundImage={coursePortada}>
+    <Layout>
       <Head>
         <link
           rel="stylesheet"
@@ -26,29 +26,12 @@ function LectureId({ lectureData, coursePortada }) {
 
 export default LectureId;
 
-export async function getStaticProps() {
-  const courseData = (await getCurso()) || {};
-  const lectureData = (await getLectureById()) || {};
-
-  const coursePortada = courseData.portada.url;
-
-  console.log('lectureData', lectureData);
+export async function getServerSideProps({ params }) {
+  const lectureData = (await getLectureById(params.id)) || {};
 
   return {
     props: {
       lectureData,
-      coursePortada,
     },
-  };
-}
-
-export async function getStaticPaths() {
-  const allLectures = (await getLecturesSlugs()) || [];
-
-  console.log(allLectures.map((lecture) => `/lecture/${lecture.slug}`));
-
-  return {
-    paths: allLectures.map((lecture) => `/lecture/${lecture.slug}`) || [],
-    fallback: false,
   };
 }
