@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Link from 'next/link';
 
 import SVG from 'react-inlinesvg';
@@ -10,7 +12,7 @@ import { pxToRem } from 'utils/helpers';
 
 import { useUserState } from 'contexts/UserContext';
 
-function HeaderDesktop() {
+function HeaderDesktop({ toggleMenu }) {
   const { userData } = useUserState();
 
   return (
@@ -36,7 +38,10 @@ function HeaderDesktop() {
             </span>
           )}
           {userData && (
-            <div className="desktop-header__avatar-container">
+            <div
+              className="desktop-header__avatar-container"
+              onClick={() => toggleMenu()}
+            >
               <Avatar
                 name={userData.username}
                 src={userData.foto_de_perfil.url}
@@ -99,6 +104,7 @@ function HeaderDesktop() {
               align-items: center;
               border-radius: 8px;
               padding: 10px;
+              user-select: none;
 
               @media (hover: hover) {
                 &:hover {
@@ -136,5 +142,9 @@ function HeaderDesktop() {
     </>
   );
 }
+
+HeaderDesktop.propTypes = {
+  toggleMenu: PropTypes.func.isRequired,
+};
 
 export default HeaderDesktop;

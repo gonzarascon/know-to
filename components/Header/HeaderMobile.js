@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Link from 'next/link';
 import Router from 'next/router';
 
@@ -8,7 +10,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 import { useUserState } from 'contexts/UserContext';
 
-function HeaderMobile() {
+function HeaderMobile({ toggleMenu }) {
   const { userData } = useUserState();
 
   function redirectToLogin() {
@@ -36,7 +38,10 @@ function HeaderMobile() {
           )}
 
           {userData && (
-            <div className="mobile-header__avatar-container">
+            <div
+              className="mobile-header__avatar-container"
+              onClick={() => toggleMenu()}
+            >
               <Avatar
                 name={userData.username}
                 src={userData.foto_de_perfil.url}
@@ -118,5 +123,9 @@ function HeaderMobile() {
     </>
   );
 }
+
+HeaderMobile.propTypes = {
+  toggleMenu: PropTypes.func.isRequired,
+};
 
 export default HeaderMobile;

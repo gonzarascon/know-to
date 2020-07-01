@@ -6,6 +6,7 @@ import { useRequest } from 'utils/helpers';
 
 import HeaderDesktop from './HeaderDesktop';
 import HeaderMobile from './HeaderMobile';
+import HeaderMenu from './HeaderMenu';
 
 import {
   useUserState,
@@ -16,6 +17,7 @@ import {
 import { Media } from 'utils/mediaRender';
 
 function Header() {
+  const [menuVisible, setMenuVisible] = useState(false);
   const { auth_token } = parseCookies();
   const { data } = useRequest({
     url: `/api/check-user?at=${auth_token}`,
@@ -40,14 +42,19 @@ function Header() {
     }
   }, [data]);
 
+  function handleMenuToggle() {
+    setMenuVisible(!menuVisible);
+  }
+
   return (
     <>
       <Media at="xs">
-        <HeaderMobile />
+        <HeaderMobile toggleMenu={handleMenuToggle} />
       </Media>
       <Media greaterThanOrEqual="sm">
-        <HeaderDesktop />
+        <HeaderDesktop toggleMenu={handleMenuToggle} />
       </Media>
+      {menuVisible && <HeaderMenu toggleMenu={handleMenuToggle} />}
     </>
   );
 }

@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 
 import { Colors, media } from 'constants';
 
-import { Header } from 'components';
+import { Header, ProfileConfiguration } from 'components';
+import { useProfileConfigurationState } from 'contexts/ProfileConfigurationContext';
 
 function Layout({ children, backgroundImage }) {
   const [mainImage, setMainImage] = useState(null);
+
+  const { visible: profileConfiguration } = useProfileConfigurationState();
 
   useEffect(() => {
     if (!backgroundImage) {
@@ -19,12 +22,22 @@ function Layout({ children, backgroundImage }) {
     }
   }, []);
 
+  useEffect(() => {
+    const body = document.getElementsByTagName('body');
+    if (profileConfiguration) {
+      body[0].style.overflow = 'hidden';
+    } else {
+      body[0].style.overflow = 'auto';
+    }
+  }, [profileConfiguration]);
+
   return (
     <>
       <div className="app-wrapper">
         <Header />
         <div className="app-wrapper__background-desktop"></div>
         <main className="main-wrapper">{children}</main>
+        {profileConfiguration && <ProfileConfiguration />}
       </div>
       <style jsx>
         {`
@@ -35,6 +48,7 @@ function Layout({ children, backgroundImage }) {
             min-height: 100vh;
             padding: 25px;
             padding-bottom: 50px;
+            position: relative;
             background: linear-gradient(
                 to bottom,
                 ${Colors.darkBlue200.setAlpha(0.97).toRGB()} 0%,
