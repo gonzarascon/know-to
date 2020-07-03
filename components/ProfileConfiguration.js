@@ -18,6 +18,11 @@ import {
   setUserAction,
 } from 'contexts/UserContext';
 
+import {
+  useProfileConfigurationDispatch,
+  setProfileConfigurationAction,
+} from 'contexts/ProfileConfigurationContext';
+
 import { fetchWithAxios } from 'utils/helpers';
 
 import IconButton from './IconButton';
@@ -26,6 +31,7 @@ export default function ProfileConfiguration() {
   const { userData, isLoading } = useUserState();
   const { auth_token } = parseCookies();
   const userDispatch = useUserDispatch();
+  const profileDispatch = useProfileConfigurationDispatch();
 
   const [configuration, setConfiguration] = useState({
     isEditing: false,
@@ -66,6 +72,8 @@ export default function ProfileConfiguration() {
       ...formData,
       [key]: value,
     });
+
+  //TODO: Handle Validations
 
   const submitBasicInformation = async () => {
     const newUserData = {
@@ -120,6 +128,32 @@ export default function ProfileConfiguration() {
     userDispatch(setUserLoading(false));
   };
 
+  const submitSecurityInformation = async () => {
+    const newUserData = {
+      ...userData,
+      email: formData.email,
+    };
+
+    userDispatch(setUserLoading(true));
+
+    if (!_.isEqual(newUserData, userData)) {
+      await fetchWithAxios({
+        model: `users/${userData.id}`,
+        method: 'put',
+        headers: {
+          Authorization: `Bearer ${auth_token}`,
+        },
+        body: newUserData,
+      }).then((response) => userDispatch(setUserAction(response)));
+    }
+
+    userDispatch(setUserLoading(false));
+  };
+
+  const closeModal = () => {
+    profileDispatch(setProfileConfigurationAction(false));
+  };
+
   if (isLoading) {
     return (
       <>
@@ -168,6 +202,7 @@ export default function ProfileConfiguration() {
           <IconButton
             icon="CloseOutlined"
             className="profile-configuration__close-button"
+            onClick={() => closeModal()}
           />
           <form className="profile-configuration__form">
             <h3 className="profile-configuration__title">Mi cuenta</h3>
@@ -259,19 +294,37 @@ export default function ProfileConfiguration() {
                   height="30px"
                   onClick={
                     isEditingCurrent('security')
-                      ? () => finishEditing()
+                      ? () => {
+                          submitSecurityInformation();
+                          finishEditing();
+                        }
                       : () => handleEditButton('security')
                   }
                 />
               </div>
-              {!isEditingCurrent('security') && (
-                <div className="profile-configuration__input-group">
-                  <MailOutlined />
-                  <span className="profile-configuration__username">
-                    {userData.email}
-                  </span>
-                </div>
-              )}
+              <div className="profile-configuration__input-group">
+                {!isEditingCurrent('security') && (
+                  <>
+                    <MailOutlined />
+                    <span className="profile-configuration__username">
+                      {userData.email}
+                    </span>
+                  </>
+                )}
+                {isEditingCurrent('security') && (
+                  <>
+                    <MailOutlined />
+                    <input
+                      value={formData.email}
+                      className="profile-configuration__username-input"
+                      placeholder="Ingresa un email"
+                      onChange={(e) =>
+                        handleInputChange('email', e.target.value)
+                      }
+                    />
+                  </>
+                )}
+              </div>
             </section>
           </form>
         </div>
