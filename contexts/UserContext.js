@@ -4,11 +4,12 @@ const dev = process.env.NODE_ENV !== 'production';
 
 const SET_USER = 'SET_USER';
 const DELETE_USER = 'DELETE_USER';
+const SET_LOADING = 'SET_LOADING';
 
 const UserStateContext = createContext(null);
 const UsertDispatchContext = createContext(null);
 
-const initialState = { userData: null };
+const initialState = { userData: null, isLoading: false };
 
 export function UserReducer(state, action) {
   switch (action.type) {
@@ -16,6 +17,11 @@ export function UserReducer(state, action) {
       return {
         ...state,
         userData: action.payload.userData,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading,
       };
     case DELETE_USER:
       return {
@@ -41,6 +47,15 @@ export function setUserAction(userData) {
     type: SET_USER,
     payload: {
       userData,
+    },
+  };
+}
+
+export function setUserLoading(bool) {
+  return {
+    type: SET_LOADING,
+    payload: {
+      isLoading: bool,
     },
   };
 }
