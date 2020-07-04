@@ -23,12 +23,12 @@ function Login() {
     setLoginForm({ ...loginForm, [key]: value, formError: false });
   }
 
-  // TODO: Handle button submit and redirect
-
   async function handleFormSubmit(e) {
     e.preventDefault();
     const { email, password } = loginForm;
-    const { data } = await loginUser({ identifier: email, password });
+    const data = await loginUser({ identifier: email, password });
+
+    console.log(data);
 
     if (_.isEmpty(data)) {
       setLoginForm({ ...loginForm, formError: true });

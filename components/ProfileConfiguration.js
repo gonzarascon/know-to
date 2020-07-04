@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
+
 import Avatar from 'react-avatar';
-import { parseCookies } from 'nookies';
 
 import SVG from 'react-inlinesvg';
 import { MailOutlined } from '@ant-design/icons';
@@ -9,7 +9,9 @@ import { MailOutlined } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 
 import { Colors, media } from 'constants';
-import { pxToRem } from 'utils/helpers';
+import { pxToRem, Validate } from 'utils/helpers';
+
+import { updateAvatar, updateUserData } from 'lib/api/user';
 
 import {
   useUserState,
@@ -23,13 +25,10 @@ import {
   setProfileConfigurationAction,
 } from 'contexts/ProfileConfigurationContext';
 
-import { fetchWithAxios } from 'utils/helpers';
-
 import IconButton from './IconButton';
 
 export default function ProfileConfiguration() {
   const { userData, isLoading } = useUserState();
-  const { auth_token } = parseCookies();
   const userDispatch = useUserDispatch();
   const profileDispatch = useProfileConfigurationDispatch();
 
@@ -43,6 +42,12 @@ export default function ProfileConfiguration() {
     email: userData.email,
     user_photo: userData.foto_de_perfil.url,
     new_photo: null,
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    username: false,
+    email: false,
+    new_photo: false,
   });
 
   useEffect(() => {
@@ -67,13 +72,18 @@ export default function ProfileConfiguration() {
     );
   };
 
-  const handleInputChange = (key, value) =>
+  const handleInputChange = (key, value) => {
     setFormData({
       ...formData,
       [key]: value,
     });
 
-  //TODO: Handle Validations
+    setFormErrors({
+      ...formErrors,
+      [key]: false,
+    });
+    return null;
+  };
 
   const submitBasicInformation = async () => {
     const newUserData = {
@@ -83,48 +93,36 @@ export default function ProfileConfiguration() {
 
     userDispatch(setUserLoading(true));
     if (formData.new_photo) {
-      let fD = new FormData();
-
-      fD.append('files', formData.new_photo[0]);
-      fD.append('refId', userData.id);
-      fD.append('ref', 'user');
-      fD.append('source', 'users-permissions');
-      fD.append('field', 'foto_de_perfil');
-
-      await fetchWithAxios({
-        model: `upload`,
-        method: 'post',
-        headers: {
-          Authorization: `Bearer ${auth_token}`,
-        },
-        body: fD,
-      })
+      await updateAvatar({ photo: formData.new_photo[0], user_id: userData.id })
         .then(() => {
           setFormData({
             ...formData,
             new_photo: null,
           });
         })
-        .catch((error) => {
+        .catch(() => {
           setFormData({
             ...formData,
             user_photo: userData.foto_de_perfil.url,
           });
-          console.error(error);
         });
     }
 
-    if (!_.isEqual(newUserData, userData)) {
-      await fetchWithAxios({
-        model: `users/${userData.id}`,
-        method: 'put',
-        headers: {
-          Authorization: `Bearer ${auth_token}`,
-        },
-        body: newUserData,
-      }).then((response) => userDispatch(setUserAction(response)));
+    if (
+      !Validate('username', formData.username) &&
+      _.isEmpty(formData.username)
+    ) {
+      userDispatch(setUserLoading(false));
+      setFormErrors({ ...formErrors, username: true });
+      return null;
     }
 
+    if (!_.isEqual(newUserData, userData)) {
+      await updateUserData({ userData: newUserData }).then((response) =>
+        userDispatch(setUserAction(response))
+      );
+    }
+    finishEditing();
     userDispatch(setUserLoading(false));
   };
 
@@ -136,17 +134,18 @@ export default function ProfileConfiguration() {
 
     userDispatch(setUserLoading(true));
 
-    if (!_.isEqual(newUserData, userData)) {
-      await fetchWithAxios({
-        model: `users/${userData.id}`,
-        method: 'put',
-        headers: {
-          Authorization: `Bearer ${auth_token}`,
-        },
-        body: newUserData,
-      }).then((response) => userDispatch(setUserAction(response)));
+    if (!Validate('email', formData.email) && _.isEmpty(formData.email)) {
+      setFormErrors({ ...formErrors, email: true });
+      return;
     }
 
+    if (!_.isEqual(newUserData, userData)) {
+      await updateUserData({ userData: newUserData }).then((response) =>
+        userDispatch(setUserAction(response))
+      );
+    }
+
+    finishEditing();
     userDispatch(setUserLoading(false));
   };
 
@@ -221,7 +220,6 @@ export default function ProfileConfiguration() {
                     isEditingCurrent('basic')
                       ? () => {
                           submitBasicInformation();
-                          finishEditing();
                         }
                       : () => handleEditButton('basic')
                   }
@@ -269,7 +267,9 @@ export default function ProfileConfiguration() {
                     </div>
                     <input
                       value={formData.username}
-                      className="profile-configuration__username-input"
+                      className={`profile-configuration__username-input ${
+                        formErrors.username && 'has-errors'
+                      }`}
                       placeholder="Ingresa un nombre de usuario"
                       onChange={(e) =>
                         handleInputChange('username', e.target.value)
@@ -296,7 +296,6 @@ export default function ProfileConfiguration() {
                     isEditingCurrent('security')
                       ? () => {
                           submitSecurityInformation();
-                          finishEditing();
                         }
                       : () => handleEditButton('security')
                   }
@@ -306,7 +305,11 @@ export default function ProfileConfiguration() {
                 {!isEditingCurrent('security') && (
                   <>
                     <MailOutlined />
-                    <span className="profile-configuration__username">
+                    <span
+                      className={`profile-configuration__username ${
+                        formErrors.email && 'has-errors'
+                      }`}
+                    >
                       {userData.email}
                     </span>
                   </>
@@ -447,6 +450,10 @@ export default function ProfileConfiguration() {
               color: white;
               font-size: ${pxToRem(20)};
               padding-left: 0;
+
+              &.has-errors {
+                border-color: var(--red-100);
+              }
             }
           }
         `}
