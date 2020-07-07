@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import _ from 'lodash';
-import { parseCookies, setCookie, destroyCookie } from 'nookies';
+import { setCookie } from 'nookies';
 
 import { media } from 'constants';
 import { pxToRem } from 'utils/helpers';
@@ -27,8 +27,6 @@ function Login() {
     e.preventDefault();
     const { email, password } = loginForm;
     const data = await loginUser({ identifier: email, password });
-
-    console.log(data);
 
     if (_.isEmpty(data)) {
       setLoginForm({ ...loginForm, formError: true });

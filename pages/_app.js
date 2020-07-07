@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 
 import { globalStyles } from 'lib/globalStyle';
 
@@ -8,6 +9,9 @@ import { ProfileConfigurationContextProvider } from 'contexts/ProfileConfigurati
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <title>Know-To</title>
+      </Head>
       <UserContextProvider>
         <ProfileConfigurationContextProvider>
           <Component {...pageProps} />

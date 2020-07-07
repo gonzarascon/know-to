@@ -33,7 +33,6 @@ function Home({ courseData }) {
 
 export async function getServerSideProps() {
   const courseData = (await getCurso()) || {};
-
   return {
     props: {
       courseData,

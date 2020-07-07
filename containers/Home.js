@@ -13,7 +13,8 @@ function Home({ courseTitle, courseDescription, coursePortada }) {
 
   function handleStartClick() {
     if (userData) {
-      Router.push('/lecture/1');
+      const lastClass = userData.checkpoint === null ? 1 : userData.checkpoint;
+      Router.push(`/lecture/${lastClass}`);
     } else {
       Router.push('/login');
     }

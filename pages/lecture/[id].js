@@ -1,6 +1,10 @@
 import React from 'react';
 import Head from 'next/head';
 
+import _ from 'lodash';
+
+import { parseCookies } from 'nookies';
+
 import { Layout, LectureContainer } from 'containers';
 import { getLectureById } from 'lib/api/lecture';
 
@@ -26,8 +30,17 @@ function LectureId({ lectureData }) {
 
 export default LectureId;
 
-export async function getServerSideProps({ params }) {
-  const lectureData = (await getLectureById(params.id)) || {};
+export async function getServerSideProps(ctx) {
+  const { params, res } = ctx;
+  const { auth_token } = parseCookies(ctx);
+  const lectureData = (await getLectureById(params.id, auth_token)) || {};
+
+  if (_.isEmpty(lectureData)) {
+    res.setHeader('location', '/404');
+    res.statusCode = 302;
+    res.end();
+    return;
+  }
 
   return {
     props: {
