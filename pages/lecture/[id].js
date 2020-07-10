@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 
 import _ from 'lodash';
 
-import { parseCookies } from 'nookies';
+import { useRequest } from 'utils/helpers';
+import { data as DocumentData } from 'constants';
 
 import { Layout, LectureContainer } from 'containers';
-import { getLectureById } from 'lib/api/lecture';
 
-function LectureId({ lectureData }) {
-  console.log('lectureData', lectureData);
+const { BASE_URL } = DocumentData;
 
-  // TODO: Handle page when lectureData comes empty
+function LectureId() {
+  const [lectureData, setLectureData] = useState(null);
+  const router = useRouter();
+
+  const { auth_token } = parseCookies();
+  const { id } = router.query;
+  const { data } = useRequest(
+    id
+      ? {
+          url: `${BASE_URL}/clases?lecture_number=${id}`,
+          headers: { Authorization: `Bearer ${auth_token}` },
+        }
+      : null
+  );
+
+  useEffect(() => {
+    if (_.isArray(data) && _.isEmpty(data)) {
+      router.push('/404');
+    }
+
+    if (!_.isEmpty(data) && !_.isEqual(data[0], lectureData)) {
+      setLectureData(data[0]);
+    }
+  }, [data]);
+
   return (
     <Layout>
       <Head>
@@ -20,31 +46,14 @@ function LectureId({ lectureData }) {
           href="https://highlightjs.org/static/demo/styles/night-owl.css"
         />
       </Head>
+
       <LectureContainer
-        title={lectureData.title}
-        content={lectureData.content}
+        title={lectureData?.lecture_title}
+        content={lectureData?.lecture_content}
+        isLoading={lectureData ? false : true}
       />
     </Layout>
   );
 }
 
 export default LectureId;
-
-export async function getServerSideProps(ctx) {
-  const { params, res } = ctx;
-  const { auth_token } = parseCookies(ctx);
-  const lectureData = (await getLectureById(params.id, auth_token)) || {};
-
-  if (_.isEmpty(lectureData)) {
-    res.setHeader('location', '/404');
-    res.statusCode = 302;
-    res.end();
-    return;
-  }
-
-  return {
-    props: {
-      lectureData,
-    },
-  };
-}

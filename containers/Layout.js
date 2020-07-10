@@ -106,7 +106,10 @@ function Layout({ children, backgroundImage }) {
 }
 
 Layout.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.any,
+  ]).isRequired,
 };
 
 export default Layout;
