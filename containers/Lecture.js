@@ -9,7 +9,12 @@ import { pxToRem } from 'utils/helpers';
 import { Button, Markdown, ProgressBar } from 'components';
 import { UniqueAnswer } from 'components/LectureQuestionInputs';
 
-function Lecture({ title, content, isLoading }) {
+function Lecture({ title, content, isLoading, userProgress, totalClasses }) {
+  const progress =
+    userProgress && totalClasses
+      ? (userProgress.completedClasses * 100) / totalClasses
+      : 0;
+
   return (
     <>
       <section className="wrapper wrapper--lecture">
@@ -24,7 +29,7 @@ function Lecture({ title, content, isLoading }) {
             <>
               <div className="wrapper__progress-container">
                 <span className="wrapper__progress-label">Progreso</span>
-                <ProgressBar percentage={50} />
+                <ProgressBar percentage={progress} />
               </div>
               <h3 className="wrapper__lecture-title">{title}</h3>
               <Markdown source={content} />
