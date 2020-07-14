@@ -87,4 +87,10 @@ function Home({ courseTitle, courseDescription, coursePortada }) {
   );
 }
 
+Home.propTypes = {
+  courseTitle: PropTypes.string.isRequired,
+  courseDescription: PropTypes.string.isRequired,
+  coursePortada: PropTypes.string.isRequired,
+};
+
 export default Home;

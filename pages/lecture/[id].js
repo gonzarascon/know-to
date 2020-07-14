@@ -17,6 +17,7 @@ const { BASE_URL } = DocumentData;
 
 function LectureId() {
   const [lectureData, setLectureData] = useState(null);
+  const [lecutreQuestions, setLectureQuestions] = useState(null);
   const router = useRouter();
   const { userData } = useUserState();
 
@@ -39,6 +40,7 @@ function LectureId() {
         }
       : null
   );
+
   const { data: totalClasses } = useRequest({
     url: `${BASE_URL}/clases/count`,
   });
@@ -50,6 +52,9 @@ function LectureId() {
 
     if (!_.isEmpty(data) && !_.isEqual(data[0], lectureData)) {
       setLectureData(data[0]);
+      if (data[0].preguntas.enunciado !== null) {
+        setLectureQuestions(data[0].preguntas);
+      }
     }
   }, [data]);
 
@@ -71,6 +76,7 @@ function LectureId() {
         isLoading={lectureData ? false : true}
         userProgress={userProgress}
         totalClasses={totalClasses}
+        question={lecutreQuestions}
       />
     </Layout>
   );

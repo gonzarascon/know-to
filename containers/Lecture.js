@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRouter } from 'next/router';
+import { parseCookies } from 'nookies';
 
 import SVG from 'react-inlinesvg';
 
@@ -8,12 +10,60 @@ import { pxToRem } from 'utils/helpers';
 
 import { Button, Markdown, ProgressBar } from 'components';
 import { UniqueAnswer } from 'components/LectureQuestionInputs';
+import { useUserState } from 'contexts/UserContext';
 
-function Lecture({ title, content, isLoading, userProgress, totalClasses }) {
-  const progress =
-    userProgress && totalClasses
-      ? (userProgress.completedClasses * 100) / totalClasses
-      : 0;
+import { updateUserData } from 'lib/api/user';
+import { setLectureCompleted } from 'lib/api/userLecture';
+
+function Lecture({
+  title,
+  content,
+  isLoading,
+  userProgress,
+  totalClasses,
+  question,
+}) {
+  const { userData } = useUserState();
+
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (userProgress && totalClasses) {
+      const totalProgressPercentage =
+        (userProgress.completedClasses * 100) / totalClasses;
+
+      setProgress(totalProgressPercentage);
+    }
+  }, [userProgress, totalClasses]);
+
+  const { auth_token } = parseCookies();
+
+  const router = useRouter();
+
+  async function handleContinueClick() {
+    const { id } = router.query;
+    const newLectureNumber = parseInt(id) + 1;
+    if (newLectureNumber > totalClasses) {
+      router.push(`/lecture/congratulations`);
+      return;
+    }
+
+    await setLectureCompleted({
+      lecture_number: id,
+      user_id: userData.id,
+      approved: false,
+      auth_token,
+    });
+
+    const newUserData = {
+      ...userData,
+      checkpoint: newLectureNumber,
+    };
+
+    await updateUserData({ userData: newUserData }).then(() => {
+      router.push(`/lecture/${newLectureNumber}`);
+    });
+  }
 
   return (
     <>
@@ -33,8 +83,15 @@ function Lecture({ title, content, isLoading, userProgress, totalClasses }) {
               </div>
               <h3 className="wrapper__lecture-title">{title}</h3>
               <Markdown source={content} />
-              <UniqueAnswer />
-              <Button className="wrapper_submit">Siguiente clase</Button>
+              {question && (
+                <UniqueAnswer
+                  statement={question.enunciado}
+                  questions={question.respuestas}
+                />
+              )}
+              <Button className="wrapper_submit" onClick={handleContinueClick}>
+                Siguiente clase
+              </Button>
             </>
           )}
         </div>

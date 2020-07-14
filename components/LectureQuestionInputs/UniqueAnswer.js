@@ -86,49 +86,30 @@ RadioButton.propTypes = {
   optionId: PropTypes.string.isRequired,
 };
 
-function UniqueAnswer() {
+function UniqueAnswer({ statement, questions }) {
   const [selectedOption, setSelectedOption] = useState(null);
+
+  console.log('statement', statement);
+  console.log('questions', questions);
 
   return (
     <>
       <section className="unique-answer">
         <form className="unique-answer__form">
-          <h3 className="unique-answer__title">
-            ¿Qué sucede cuando renderizamos ese componente?
-          </h3>
-          <RadioButton
-            value="El componente desaparece"
-            label="El componente desaparece"
-            checked={selectedOption === 'El componente desaparece'}
-            onChange={(e) => {
-              setSelectedOption(e.target.value);
-              console.log('click option');
-            }}
-            optionId="option1"
-          />
-          <RadioButton
-            value="El resto de componentes cambian"
-            label="El resto de componentes cambian"
-            checked={selectedOption === 'El resto de componentes cambian'}
-            onChange={(e) => {
-              setSelectedOption(e.target.value);
-              console.log('click option');
-            }}
-            optionId="option2"
-          />
-          <RadioButton
-            value="Se muestran los componentes anteriores más el nuevo."
-            label="Se muestran los componentes anteriores más el nuevo."
-            checked={
-              selectedOption ===
-              'Se muestran los componentes anteriores más el nuevo.'
-            }
-            onChange={(e) => {
-              setSelectedOption(e.target.value);
-              console.log('click option');
-            }}
-            optionId="option3"
-          />
+          <h3 className="unique-answer__title">{statement.pregunta}</h3>
+          {questions.map((question) => (
+            <RadioButton
+              key={question.id}
+              value={question.respuesta}
+              label={question.respuesta}
+              checked={selectedOption === question.respuesta}
+              onChange={(e) => {
+                setSelectedOption(e.target.value);
+                console.log('click option');
+              }}
+              optionId={`option${question.id}`}
+            />
+          ))}
         </form>
       </section>
       <style jsx>

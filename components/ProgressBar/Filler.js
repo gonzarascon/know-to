@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 
 function Filler({ percentage }) {
+  const controls = useAnimation();
+  const [parsedPercentage, setParsedPercentage] = useState('0%');
   const FillerVariants = {
     init: {
       width: '0%',
@@ -17,14 +19,20 @@ function Filler({ percentage }) {
     }),
   };
 
-  const parsedPercentage = `${percentage}%`;
+  useEffect(() => {
+    setParsedPercentage(`${percentage}%`);
+  }, [percentage]);
+
+  useEffect(() => {
+    controls.start('full');
+  }, [parsedPercentage]);
 
   return (
     <>
       <motion.div
         className="progress-bar__filler"
         initial="init"
-        animate="full"
+        animate={controls}
         custom={parsedPercentage}
         variants={FillerVariants}
       />
