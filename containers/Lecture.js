@@ -26,6 +26,14 @@ function Lecture({
   const { userData } = useUserState();
 
   const [progress, setProgress] = useState(0);
+  const [canContinue, setCanContinue] = useState(false);
+  const [approved, setApproved] = useState(false);
+
+  useEffect(() => {
+    if (!question) {
+      setCanContinue(true);
+    }
+  }, [question]);
 
   useEffect(() => {
     if (userProgress && totalClasses) {
@@ -51,7 +59,7 @@ function Lecture({
     await setLectureCompleted({
       lecture_number: id,
       user_id: userData.id,
-      approved: false,
+      approved,
       auth_token,
     });
 
@@ -90,7 +98,7 @@ function Lecture({
                 />
               )}
               <Button className="wrapper_submit" onClick={handleContinueClick}>
-                Siguiente clase
+                {!canContinue ? 'Enviar respuesta' : 'Siguiente clase'}
               </Button>
             </>
           )}
