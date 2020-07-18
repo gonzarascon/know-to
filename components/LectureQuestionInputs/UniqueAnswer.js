@@ -86,12 +86,12 @@ RadioButton.propTypes = {
   optionId: PropTypes.string.isRequired,
 };
 
-function UniqueAnswer({ statement, questions }) {
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  console.log('statement', statement);
-  console.log('questions', questions);
-
+function UniqueAnswer({
+  statement,
+  questions,
+  selectedOption,
+  setSelectedOption,
+}) {
   return (
     <>
       <section className="unique-answer">
@@ -105,7 +105,6 @@ function UniqueAnswer({ statement, questions }) {
               checked={selectedOption === question.respuesta}
               onChange={(e) => {
                 setSelectedOption(e.target.value);
-                console.log('click option');
               }}
               optionId={`option${question.id}`}
             />

@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
 
+import _, { set } from 'lodash';
+
 import SVG from 'react-inlinesvg';
 
 import { media } from 'constants';
 import { pxToRem } from 'utils/helpers';
 
-import { Button, Markdown, ProgressBar } from 'components';
+import { Button, Markdown, ProgressBar, Explanation } from 'components';
 import { UniqueAnswer } from 'components/LectureQuestionInputs';
 import { useUserState } from 'contexts/UserContext';
 
@@ -28,10 +30,15 @@ function Lecture({
   const [progress, setProgress] = useState(0);
   const [canContinue, setCanContinue] = useState(false);
   const [approved, setApproved] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [hasSubmited, setHasSubmited] = useState(false);
 
   useEffect(() => {
-    if (!question) {
+    if (question) {
+      setCanContinue(false);
+    } else {
       setCanContinue(true);
+      setApproved(true);
     }
   }, [question]);
 
@@ -73,6 +80,19 @@ function Lecture({
     });
   }
 
+  function checkResponseValue() {
+    if (selectedOption) {
+      const answerResult = _.find(
+        question.respuestas,
+        (o) => o.respuesta === selectedOption
+      );
+
+      setApproved(answerResult.correcta);
+      setHasSubmited(true);
+      setCanContinue(true);
+    }
+  }
+
   return (
     <>
       <section className="wrapper wrapper--lecture">
@@ -91,13 +111,25 @@ function Lecture({
               </div>
               <h3 className="wrapper__lecture-title">{title}</h3>
               <Markdown source={content} />
-              {question && (
+              {question && !hasSubmited && (
                 <UniqueAnswer
                   statement={question.enunciado}
                   questions={question.respuestas}
+                  selectedOption={selectedOption}
+                  setSelectedOption={setSelectedOption}
                 />
               )}
-              <Button className="wrapper_submit" onClick={handleContinueClick}>
+              {hasSubmited && (
+                <Explanation correct={approved} text={question.explicacion} />
+              )}
+              <Button
+                className="wrapper_submit"
+                onClick={
+                  canContinue
+                    ? () => handleContinueClick()
+                    : () => checkResponseValue()
+                }
+              >
                 {!canContinue ? 'Enviar respuesta' : 'Siguiente clase'}
               </Button>
             </>
