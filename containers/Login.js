@@ -69,7 +69,6 @@ function Login() {
               onChange={(e) => handleInputChange(e.target.value, 'password')}
               type="password"
             />
-            <a className="wrapper__link">¿Olvidaste tu contraseña?</a>
             <Button className="wrapper__submit" type="submit">
               Inciar sesión
             </Button>
@@ -96,6 +95,9 @@ function Login() {
 
               & .wrapper__content {
                 @media ${media.mediumDevice} {
+                  width: 60%;
+                }
+                @media ${media.largeDevice} {
                   width: 40%;
                 }
 

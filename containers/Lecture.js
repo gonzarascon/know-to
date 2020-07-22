@@ -194,6 +194,9 @@ function Lecture({
 
             &__content {
               @media ${media.mediumDevice} {
+                width: 60%;
+              }
+              @media ${media.largeDevice} {
                 width: 50%;
               }
             }

@@ -70,7 +70,7 @@ function Layout({ children, backgroundImage }) {
                 position: fixed;
                 top: 0;
                 right: 0;
-                width: 50%;
+                width: 75%;
                 height: 100vh;
                 background: linear-gradient(
                     to right,
@@ -80,6 +80,18 @@ function Layout({ children, backgroundImage }) {
                   url(${mainImage}) no-repeat;
                 background-position: 20% center;
                 z-index: -1;
+                background-size: cover;
+              }
+
+              @media ${media.largeDevice} {
+                width: 50%;
+                background: linear-gradient(
+                    to right,
+                    ${Colors.darkBlue200.setAlpha(1).toRGB()} 35%,
+                    ${Colors.darkBlue200.setAlpha(0).toRGB()} 65%
+                  ),
+                  url(${mainImage}) no-repeat;
+                background-position: 20% center;
                 background-size: cover;
               }
             }

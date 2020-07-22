@@ -19,9 +19,13 @@ import { Media } from 'utils/mediaRender';
 function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
   const { auth_token } = parseCookies();
-  const { data } = useRequest({
-    url: `/api/check-user?at=${auth_token}`,
-  });
+  const { data } = useRequest(
+    auth_token
+      ? {
+          url: `/api/check-user?at=${auth_token}`,
+        }
+      : null
+  );
 
   const { userData } = useUserState();
   const dispatch = useUserDispatch();

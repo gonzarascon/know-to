@@ -34,6 +34,10 @@ function FormInput({ label, ...props }) {
 
               &[type='password'] {
                 font-size: ${pxToRem(25)};
+
+                &::placeholder {
+                  font-size: ${pxToRem(20)};
+                }
               }
 
               &:focus {

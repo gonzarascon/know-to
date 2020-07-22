@@ -96,6 +96,13 @@ function HeaderDesktop({ toggleMenu }) {
 
             & .desktop-header__link {
               text-decoration: none;
+              color: var(--white);
+              @media (hover: hover) {
+                &:hover {
+                  opacity: 0.75;
+                  transition: opacity ease 0.3s;
+                }
+              }
             }
 
             &__avatar-container {
