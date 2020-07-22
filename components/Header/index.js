@@ -18,6 +18,8 @@ import { Media } from 'utils/mediaRender';
 
 function Header() {
   const [menuVisible, setMenuVisible] = useState(false);
+  const [boxOffset, setBoxOffset] = useState({ x: 0, y: 0 });
+
   const { auth_token } = parseCookies();
   const { data } = useRequest(
     auth_token
@@ -57,9 +59,14 @@ function Header() {
         <HeaderMobile toggleMenu={handleMenuToggle} />
       </Media>
       <Media greaterThanOrEqual="sm">
-        <HeaderDesktop toggleMenu={handleMenuToggle} />
+        <HeaderDesktop
+          toggleMenu={handleMenuToggle}
+          setBoxOffset={setBoxOffset}
+        />
       </Media>
-      {menuVisible && <HeaderMenu toggleMenu={handleMenuToggle} />}
+      {menuVisible && (
+        <HeaderMenu toggleMenu={handleMenuToggle} boxOffset={boxOffset} />
+      )}
     </>
   );
 }

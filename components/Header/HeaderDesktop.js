@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Link from 'next/link';
@@ -12,8 +12,19 @@ import { pxToRem } from 'utils/helpers';
 
 import { useUserState } from 'contexts/UserContext';
 
-function HeaderDesktop({ toggleMenu }) {
+function HeaderDesktop({ toggleMenu, setBoxOffset }) {
   const { userData } = useUserState();
+
+  useEffect(() => {
+    const boxRef = document.getElementById('menu-box');
+
+    if (boxRef) {
+      setBoxOffset({
+        x: boxRef.offsetLeft,
+        y: boxRef.offsetTop,
+      });
+    }
+  }, [userData]);
 
   return (
     <>
@@ -42,6 +53,7 @@ function HeaderDesktop({ toggleMenu }) {
               className="desktop-header__avatar-container --menu-element"
               onClick={() => toggleMenu()}
             >
+              <span id="menu-box" />
               <Avatar
                 name={userData.username}
                 src={

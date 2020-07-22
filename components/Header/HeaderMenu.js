@@ -14,9 +14,11 @@ import {
   setProfileConfigurationAction,
 } from 'contexts/ProfileConfigurationContext';
 
-function HeaderMenu({ toggleMenu }) {
+function HeaderMenu({ toggleMenu, boxOffset }) {
   const router = useRouter();
   const profileDispatch = useProfileConfigurationDispatch();
+
+  console.log(boxOffset);
 
   const wrapperRef = useRef(null);
   // useOutsideAlerter(wrapperRef, () => toggleMenu());
@@ -104,8 +106,7 @@ function HeaderMenu({ toggleMenu }) {
               @media ${media.mediumDevice} {
                 height: 125px;
                 width: 250px;
-                left: unset;
-                right: 15.75rem;
+                left: calc(${boxOffset.x}px - 250px);
               }
             }
 

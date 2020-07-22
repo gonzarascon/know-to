@@ -60,7 +60,7 @@ function Login() {
             onSubmit={(e) => handleFormSubmit(e)}
           >
             <FormInput
-              label="E-mail"
+              label="E-mail o nombre de usuario"
               placeholder="usuario@ejemplo.com"
               onChange={(e) => handleInputChange(e.target.value, 'email')}
             />
