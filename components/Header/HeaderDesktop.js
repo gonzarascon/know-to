@@ -39,7 +39,7 @@ function HeaderDesktop({ toggleMenu }) {
           )}
           {userData && (
             <div
-              className="desktop-header__avatar-container"
+              className="desktop-header__avatar-container --menu-element"
               onClick={() => toggleMenu()}
             >
               <Avatar
@@ -48,12 +48,12 @@ function HeaderDesktop({ toggleMenu }) {
                 round
                 size="35px"
                 alt={userData.username}
-                className="desktop-header__avatar"
+                className="desktop-header__avatar --menu-element"
               />
-              <span className="desktop-header__username">
+              <span className="desktop-header__username --menu-element">
                 {userData.username}
               </span>
-              <DownOutlined className="desktop-header__menu-arrow" />
+              <DownOutlined className="desktop-header__menu-arrow --menu-element" />
             </div>
           )}
         </div>

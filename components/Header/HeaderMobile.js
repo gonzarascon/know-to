@@ -39,8 +39,8 @@ function HeaderMobile({ toggleMenu }) {
 
           {userData && (
             <div
-              className="mobile-header__avatar-container"
-              onClick={() => toggleMenu()}
+              className="mobile-header__avatar-container --menu-element"
+              onClick={(e) => toggleMenu(e.target)}
             >
               <Avatar
                 name={userData.username}
@@ -48,7 +48,7 @@ function HeaderMobile({ toggleMenu }) {
                 round
                 size="45px"
                 alt={userData.username}
-                className="mobile-header__avatar"
+                className="mobile-header__avatar --menu-element"
               />
             </div>
           )}

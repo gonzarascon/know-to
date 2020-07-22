@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useRouter } from 'next/router';
@@ -19,12 +19,31 @@ function HeaderMenu({ toggleMenu }) {
   const profileDispatch = useProfileConfigurationDispatch();
 
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, () => toggleMenu());
+  // useOutsideAlerter(wrapperRef, () => toggleMenu());
 
   function handleProfileConfiguration() {
     profileDispatch(setProfileConfigurationAction(true));
     toggleMenu();
   }
+
+  function handleClickOutside(e) {
+    if (
+      wrapperRef.current.contains(e.target) ||
+      e.target.className.includes('--menu-element')
+    ) {
+      return;
+    }
+
+    toggleMenu();
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   function handleLogout() {
     destroyCookie(null, 'auth_token');

@@ -42,7 +42,8 @@ function Header() {
     }
   }, [data]);
 
-  function handleMenuToggle() {
+  function handleMenuToggle(e) {
+    console.log(e);
     setMenuVisible(!menuVisible);
   }
 

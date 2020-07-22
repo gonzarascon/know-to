@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { MediaContextProvider } from 'utils/mediaRender';
 
+import { getTotalLectures } from 'lib/api/lecture';
+
 import { Layout, HomeContainer } from 'containers';
 import { getCurso } from 'lib/api/getCurso';
 
-function Home({ courseData }) {
+function Home({ courseData, totalClasses }) {
   const { title: courseTitle, description, portada } = courseData;
 
   useEffect(() => {
@@ -25,6 +27,7 @@ function Home({ courseData }) {
           courseTitle={courseTitle}
           courseDescription={description}
           coursePortada={portada}
+          totalClasses={totalClasses}
         />
       </MediaContextProvider>
     </Layout>
@@ -33,9 +36,12 @@ function Home({ courseData }) {
 
 export async function getServerSideProps() {
   const courseData = (await getCurso()) || {};
+  const totalLectures = await getTotalLectures();
+
   return {
     props: {
       courseData,
+      totalClasses: totalLectures,
     },
   };
 }

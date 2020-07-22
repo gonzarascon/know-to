@@ -8,12 +8,17 @@ import { Media } from 'utils/mediaRender';
 import { useUserState } from 'contexts/UserContext';
 import { AnimatedText, Button } from 'components';
 
-function Home({ courseTitle, courseDescription, coursePortada }) {
+function Home({ courseTitle, courseDescription, coursePortada, totalClasses }) {
   const { userData } = useUserState();
 
   function handleStartClick() {
     if (userData) {
       const lastClass = userData.checkpoint === null ? 1 : userData.checkpoint;
+
+      if (parseInt(lastClass) === totalClasses) {
+        Router.push('/lecture/congratulations');
+        return;
+      }
       Router.push(`/lecture/${lastClass}`);
     } else {
       Router.push('/login');

@@ -6,6 +6,7 @@ import { parseCookies } from 'nookies';
 
 import _ from 'lodash';
 
+import { getTotalLectures } from 'lib/api/lecture';
 import { useRequest } from 'utils/helpers';
 import { data as DocumentData } from 'constants';
 
@@ -15,9 +16,20 @@ import { useUserState } from 'contexts/UserContext';
 
 const { BASE_URL } = DocumentData;
 
-function LectureId() {
+export async function getServerSideProps() {
+  const totalLectures = await getTotalLectures();
+  return {
+    props: {
+      totalLectures,
+    },
+  };
+}
+
+function LectureId({ totalLectures }) {
   const [lectureData, setLectureData] = useState(null);
   const [lecutreQuestions, setLectureQuestions] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(null);
+
   const router = useRouter();
   const { userData } = useUserState();
 
@@ -44,6 +56,20 @@ function LectureId() {
   const { data: totalClasses } = useRequest({
     url: `${BASE_URL}/clases/count`,
   });
+
+  const { data: userClase } = useRequest(
+    userData?.id && id
+      ? {
+          url: `${BASE_URL}/user-clases?clase.lecture_number=${id}&user.id=${userData.id}`,
+        }
+      : null
+  );
+
+  useEffect(() => {
+    if (userClase) {
+      setIsCompleted(userClase[0].completed);
+    }
+  }, [userClase]);
 
   useEffect(() => {
     if (_.isArray(data) && _.isEmpty(data)) {
@@ -77,6 +103,7 @@ function LectureId() {
         userProgress={userProgress}
         totalClasses={totalClasses}
         question={lecutreQuestions}
+        completed={isCompleted}
       />
     </Layout>
   );

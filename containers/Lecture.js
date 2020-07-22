@@ -24,6 +24,7 @@ function Lecture({
   userProgress,
   totalClasses,
   question,
+  completed,
 }) {
   const { userData } = useUserState();
 
@@ -32,6 +33,7 @@ function Lecture({
   const [approved, setApproved] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [hasSubmited, setHasSubmited] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(completed);
 
   useEffect(() => {
     if (question) {
@@ -41,6 +43,18 @@ function Lecture({
       setApproved(true);
     }
   }, [question]);
+
+  useEffect(() => {
+    if (completed !== null) {
+      setIsCompleted(completed);
+    }
+  }, [completed]);
+
+  useEffect(() => {
+    if (isCompleted === true) {
+      setCanContinue(true);
+    }
+  }, [isCompleted]);
 
   useEffect(() => {
     if (userProgress && totalClasses) {
@@ -63,21 +77,25 @@ function Lecture({
       return;
     }
 
-    await setLectureCompleted({
-      lecture_number: id,
-      user_id: userData.id,
-      approved,
-      auth_token,
-    });
+    if (!isCompleted) {
+      await setLectureCompleted({
+        lecture_number: id,
+        user_id: userData.id,
+        approved,
+        auth_token,
+      });
 
-    const newUserData = {
-      ...userData,
-      checkpoint: newLectureNumber,
-    };
+      const newUserData = {
+        ...userData,
+        checkpoint: newLectureNumber,
+      };
 
-    await updateUserData({ userData: newUserData }).then(() => {
+      await updateUserData({ userData: newUserData }).then(() => {
+        router.push(`/lecture/${newLectureNumber}`);
+      });
+    } else {
       router.push(`/lecture/${newLectureNumber}`);
-    });
+    }
   }
 
   function checkResponseValue() {
@@ -111,7 +129,7 @@ function Lecture({
               </div>
               <h3 className="wrapper__lecture-title">{title}</h3>
               <Markdown source={content} />
-              {question && !hasSubmited && (
+              {question && !hasSubmited && isCompleted === false && (
                 <UniqueAnswer
                   statement={question.enunciado}
                   questions={question.respuestas}
@@ -121,6 +139,14 @@ function Lecture({
               )}
               {hasSubmited && (
                 <Explanation correct={approved} text={question.explicacion} />
+              )}
+              {question && isCompleted && (
+                <section className="wrapper__completed-message">
+                  <p className="wrapper__completed-text">
+                    Esta clase está completa y no puedes volver a ingresar tu
+                    respuesta.
+                  </p>
+                </section>
               )}
               <Button
                 className="wrapper_submit"
@@ -142,6 +168,28 @@ function Lecture({
             &--lecture {
               display: flex;
               flex-direction: column;
+            }
+
+            &__completed-message {
+              display: flex;
+              flex-direction: column;
+              background-color: var(--action-primary-100);
+              color: var(--action-primary);
+              padding: 15px;
+              border-radius: 15px;
+              margin-top: 35px;
+
+              @media ${media.mediumDevice} {
+                padding: 25px;
+              }
+            }
+
+            &__completed-text {
+              font-size: ${pxToRem(18)};
+
+              @media ${media.mediumDevice} {
+                font-size: ${pxToRem(20)};
+              }
             }
 
             &__content {
