@@ -90,6 +90,9 @@ function SignUp() {
               onChange={(e) => handleInputChange(e.target.value, 'username')}
               type="text"
             />
+            <span className="wrapper_input-help wrapper_input-help--no-bottom">
+              Debe contener entre 6 y 12 caracteres.
+            </span>
             <FormInput
               label="E-mail"
               placeholder="usuario@ejemplo.com"
@@ -105,7 +108,7 @@ function SignUp() {
               onChange={(e) => handleInputChange(e.target.value, 'password')}
             />
             <span className="wrapper_input-help">
-              Tu contraseña debe contener mínimo 6 caracteres.{' '}
+              Tu contraseña debe contener mínimo 6 caracteres.
             </span>
             <Button className="wrapper_submit" type="submit">
               Crear cuenta
@@ -148,6 +151,10 @@ function SignUp() {
                 margin: 10px 0;
                 display: inline-block;
                 margin-left: 5px;
+
+                &--no-bottom {
+                  margin-bottom: 0;
+                }
               }
 
               & :global(.wrapper_submit) {
