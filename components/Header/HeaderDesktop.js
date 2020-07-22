@@ -55,7 +55,10 @@ function HeaderDesktop({ toggleMenu }) {
               <span className="desktop-header__username --menu-element">
                 {userData.username}
               </span>
-              <DownOutlined className="desktop-header__menu-arrow --menu-element" />
+              <span className="desktop-header__arrow-container --menu-element">
+                <span className="desktop-header__arrow-filler --menu-element" />
+                <DownOutlined className="desktop-header__menu-arrow --menu-element" />
+              </span>
             </div>
           )}
         </div>
@@ -79,6 +82,17 @@ function HeaderDesktop({ toggleMenu }) {
               align-items: center;
               justify-content: space-between;
               padding: 25px;
+            }
+
+            &__arrow-container {
+              position: relative;
+            }
+
+            &__arrow-filler {
+              display: block;
+              width: 100%;
+              height: 100%;
+              position: absolute;
             }
 
             &__logo {

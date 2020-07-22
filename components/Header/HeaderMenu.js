@@ -27,6 +27,7 @@ function HeaderMenu({ toggleMenu }) {
   }
 
   function handleClickOutside(e) {
+    console.log(e.target.className);
     if (
       wrapperRef.current.contains(e.target) ||
       e.target.className.includes('--menu-element')
@@ -94,12 +95,17 @@ function HeaderMenu({ toggleMenu }) {
             &__menu {
               background-color: var(--white);
               border-radius: 10px;
-              position: relative;
+              position: fixed;
+              left: 0;
+              right: 0;
+              margin: auto;
               width: calc(100vw - 30px);
               height: 150px;
               @media ${media.mediumDevice} {
                 height: 125px;
                 width: 250px;
+                left: unset;
+                right: 15.75rem;
               }
             }
 
