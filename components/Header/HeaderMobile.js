@@ -44,7 +44,9 @@ function HeaderMobile({ toggleMenu }) {
             >
               <Avatar
                 name={userData.username}
-                src={userData.foto_de_perfil.url}
+                src={
+                  userData.foto_de_perfil ? userData.foto_de_perfil.url : null
+                }
                 round
                 size="45px"
                 alt={userData.username}
