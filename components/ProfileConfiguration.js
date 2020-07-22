@@ -40,7 +40,7 @@ export default function ProfileConfiguration() {
   const [formData, setFormData] = useState({
     username: userData.username,
     email: userData.email,
-    user_photo: userData.foto_de_perfil.url,
+    user_photo: userData.foto_de_perfil ? userData.foto_de_perfil.url : null,
     new_photo: null,
   });
 
@@ -55,7 +55,7 @@ export default function ProfileConfiguration() {
       ...formData,
       username: userData.username,
       email: userData.email,
-      user_photo: userData.foto_de_perfil.url,
+      user_photo: userData.foto_de_perfil ? userData.foto_de_perfil.url : null,
     });
   }, [userData]);
 
@@ -103,7 +103,9 @@ export default function ProfileConfiguration() {
         .catch(() => {
           setFormData({
             ...formData,
-            user_photo: userData.foto_de_perfil.url,
+            user_photo: userData.foto_de_perfil
+              ? userData.foto_de_perfil.url
+              : null,
           });
         });
     }
@@ -230,9 +232,13 @@ export default function ProfileConfiguration() {
                 {!isEditingCurrent('basic') && (
                   <>
                     <Avatar
-                      src={userData.foto_de_perfil.url}
-                      title={userData.username}
-                      alt={userData.username}
+                      src={
+                        userData.foto_de_perfil
+                          ? userData.foto_de_perfil.url
+                          : null
+                      }
+                      name={formData.username}
+                      alt={formData.username}
                       round
                       size="55px"
                       className="profile-configuration__avatar"
@@ -258,7 +264,7 @@ export default function ProfileConfiguration() {
                       />
                       <Avatar
                         src={formData.user_photo}
-                        title={formData.username}
+                        name={formData.username}
                         alt={formData.username}
                         round
                         size="55px"
