@@ -21,21 +21,16 @@ function SignUp() {
 
   function checkErrors() {
     if (!Validate('username', signupForm.username)) {
-      console.log('user pincho');
       setSignupForm({ ...signupForm, formError: true });
       return true;
     }
 
     if (!Validate('email', signupForm.email)) {
-      console.log('mail pincho');
-
       setSignupForm({ ...signupForm, formError: true });
       return true;
     }
 
     if (!Validate('password', signupForm.password)) {
-      console.log('pass pincho');
-
       setSignupForm({ ...signupForm, formError: true });
       return true;
     }

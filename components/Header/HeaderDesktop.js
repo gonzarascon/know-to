@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Link from 'next/link';
@@ -15,7 +15,7 @@ import { useUserState } from 'contexts/UserContext';
 function HeaderDesktop({ toggleMenu, setBoxOffset }) {
   const { userData } = useUserState();
 
-  useEffect(() => {
+  const setOffset = useCallback(() => {
     const boxRef = document.getElementById('menu-box');
 
     if (boxRef) {
@@ -24,7 +24,19 @@ function HeaderDesktop({ toggleMenu, setBoxOffset }) {
         y: boxRef.offsetTop,
       });
     }
+  }, []);
+
+  useEffect(() => {
+    setOffset();
   }, [userData]);
+
+  useEffect(() => {
+    // document.addEventListener('resize', setOffset);
+
+    window.addEventListener('resize', setOffset);
+
+    return () => window.removeEventListener('resize', setOffset);
+  }, []);
 
   return (
     <>

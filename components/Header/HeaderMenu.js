@@ -18,8 +18,6 @@ function HeaderMenu({ toggleMenu, boxOffset }) {
   const router = useRouter();
   const profileDispatch = useProfileConfigurationDispatch();
 
-  console.log(boxOffset);
-
   const wrapperRef = useRef(null);
   // useOutsideAlerter(wrapperRef, () => toggleMenu());
 
@@ -29,7 +27,6 @@ function HeaderMenu({ toggleMenu, boxOffset }) {
   }
 
   function handleClickOutside(e) {
-    console.log(e.target.className);
     if (
       wrapperRef.current.contains(e.target) ||
       e.target.className.includes('--menu-element')
@@ -107,6 +104,10 @@ function HeaderMenu({ toggleMenu, boxOffset }) {
                 height: 125px;
                 width: 250px;
                 left: calc(${boxOffset.x}px - 250px);
+              }
+
+              @media ${media.fullHDevice} {
+                left: calc(${boxOffset.x}px - (250px * 2));
               }
             }
 
