@@ -22,7 +22,9 @@ function Header() {
 
   const { auth_token } = parseCookies();
   const { data } = useRequest(
-    auth_token
+    auth_token !== 'undefined' &&
+      auth_token !== null &&
+      auth_token !== undefined
       ? {
           url: `/api/check-user?at=${auth_token}`,
         }
@@ -34,7 +36,9 @@ function Header() {
 
   useEffect(() => {
     const localUserData = JSON.parse(localStorage.getItem('userData'));
+    console.log(localUserData);
     if (localUserData && localUserData !== userData) {
+      console.log('paso if');
       dispatch(setUserAction(localUserData));
     }
   }, []);

@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import Link from 'next/link';
 
 import { media } from 'constants';
 
@@ -27,7 +27,10 @@ function Congratulations({ courseTitle, userPoints }) {
           <AnimatedText className="wrapper__description">
             ¡Muchas gracias por participar! <br />
             <sub className="wrapper__aclaration">
-              (Puedes cerrar esta pestaña sin problemas)
+              (Puedes cerrar esta pestaña sin problemas) o{' '}
+              <Link href="/">
+                <a>Volver al inicio</a>
+              </Link>
             </sub>
           </AnimatedText>
         </div>

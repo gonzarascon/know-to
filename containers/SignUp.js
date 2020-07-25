@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { setCookie } from 'nookies';
 
@@ -18,6 +18,8 @@ function SignUp() {
     password: null,
     formError: false,
   });
+
+  const [dataAlreadyTaken, setDataAlreadyTaken] = useState(false);
 
   function checkErrors() {
     if (!Validate('username', signupForm.username)) {
@@ -47,19 +49,25 @@ function SignUp() {
 
     const { username, email, password } = signupForm;
 
-    await createUser({ username, email, password }).then(async (data) => {
-      setCookie(null, 'auth_token', data.jwt, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: '/',
-      });
-      localStorage.setItem('userData', JSON.stringify(data.user));
+    await createUser({ username, email, password })
+      .then(async (data) => {
+        console.log(data);
+        setCookie(null, 'auth_token', data.jwt, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: '/',
+        });
+        localStorage.setItem('userData', JSON.stringify(data.user));
 
-      router.push('/');
-    });
+        router.push('/');
+      })
+      .catch((error) => setDataAlreadyTaken(true));
   }
 
   function handleInputChange(value, key) {
     setSignupForm({ ...signupForm, [key]: value, formError: false });
+    if (dataAlreadyTaken) {
+      setDataAlreadyTaken(false);
+    }
   }
 
   return (
@@ -71,6 +79,16 @@ function SignUp() {
             <div className="wrapper__error-container">
               <p className="wrapper__error-message">
                 Por favor, corrobora que los datos sean correctos.
+              </p>
+            </div>
+          )}
+          {dataAlreadyTaken && (
+            <div className="wrapper__error-container">
+              <p className="wrapper__error-message">
+                Ya existe un usuario con estas credenciales. <br />
+                <Link href="/login">
+                  <a>¿Quieres iniciar sesión?</a>
+                </Link>
               </p>
             </div>
           )}

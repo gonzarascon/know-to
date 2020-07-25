@@ -72,10 +72,6 @@ function Lecture({
   async function handleContinueClick() {
     const { id } = router.query;
     const newLectureNumber = parseInt(id) + 1;
-    if (newLectureNumber > totalClasses) {
-      router.push(`/lecture/congratulations`);
-      return;
-    }
 
     if (!isCompleted) {
       await setLectureCompleted({
@@ -91,7 +87,11 @@ function Lecture({
       };
 
       await updateUserData({ userData: newUserData }).then(() => {
-        router.push(`/lecture/${newLectureNumber}`);
+        if (newLectureNumber > totalClasses) {
+          router.push(`/lecture/congratulations`);
+        } else {
+          router.push(`/lecture/${newLectureNumber}`);
+        }
       });
     } else {
       router.push(`/lecture/${newLectureNumber}`);

@@ -366,14 +366,18 @@ export default function ProfileConfiguration() {
           .profile-configuration {
             &__modal {
               background-color: var(--dark-blue-200);
-              height: 45vh;
+              min-height: 50vh;
               width: 100%;
               max-width: 600px;
               display: flex;
               flex-direction: column;
-              padding: 20px;
+              padding: 20px 25px;
               border-radius: 10px;
-              padding-left: 50px;
+
+              @media ${media.mediumDevice} {
+                height: 45vh;
+                padding-left: 50px;
+              }
             }
 
             &__form {

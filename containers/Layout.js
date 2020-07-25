@@ -12,9 +12,10 @@ function Layout({ children, backgroundImage }) {
   const { visible: profileConfiguration } = useProfileConfigurationState();
 
   useEffect(() => {
-    if (!backgroundImage) {
+    const courseData = localStorage.getItem('courseData');
+    if (!backgroundImage && courseData) {
       // Check for backgroundImage in localstorage
-      const { portada } = JSON.parse(localStorage.getItem('courseData'));
+      const { portada } = JSON.parse(courseData);
 
       setMainImage(portada.url);
     } else {
