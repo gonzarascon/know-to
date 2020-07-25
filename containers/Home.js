@@ -49,6 +49,8 @@ function Home({ courseTitle, courseDescription, coursePortada, totalClasses }) {
       } else {
         setIsCompleted(false);
       }
+    } else {
+      setIsCompleted(false);
     }
     setIsLoading(false);
   }, [userData]);
