@@ -6,8 +6,14 @@ import { destroyCookie } from 'nookies';
 
 import { SettingOutlined, LogoutOutlined } from '@ant-design/icons';
 
-import { pxToRem, useOutsideAlerter } from 'utils/helpers';
+import { pxToRem } from 'utils/helpers';
 import media from 'constants/media';
+
+import {
+  useUserState,
+  useUserDispatch,
+  setUserAction,
+} from 'contexts/UserContext';
 
 import {
   useProfileConfigurationDispatch,
@@ -15,11 +21,11 @@ import {
 } from 'contexts/ProfileConfigurationContext';
 
 function HeaderMenu({ toggleMenu, boxOffset }) {
+  const dispatch = useUserDispatch();
   const router = useRouter();
   const profileDispatch = useProfileConfigurationDispatch();
 
   const wrapperRef = useRef(null);
-  // useOutsideAlerter(wrapperRef, () => toggleMenu());
 
   function handleProfileConfiguration() {
     profileDispatch(setProfileConfigurationAction(true));
@@ -48,6 +54,7 @@ function HeaderMenu({ toggleMenu, boxOffset }) {
   function handleLogout() {
     destroyCookie(null, 'auth_token');
     localStorage.setItem('userData', null);
+    dispatch(setUserAction(null));
 
     if (router.pathname !== '/') {
       router.push('/');

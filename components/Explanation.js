@@ -2,6 +2,7 @@ import React from 'react';
 
 import { pxToRem } from 'utils/helpers';
 import { media } from 'constants';
+import MarkdownRender from './Markdown';
 
 function Explanation({ correct, text }) {
   return (
@@ -10,7 +11,11 @@ function Explanation({ correct, text }) {
         <h3 className="explanation__title">
           {correct ? '¡Respuesta correcta!' : '¡Respuesta incorrecta!'}
         </h3>
-        {text && <p className="explanation__text">{text}</p>}
+        {text && (
+          <p className="explanation__text">
+            <MarkdownRender source={text} />
+          </p>
+        )}
       </div>
       <style jsx>
         {`
@@ -39,6 +44,14 @@ function Explanation({ correct, text }) {
 
             &__text {
               font-size: ${pxToRem(18)};
+
+              :global(.inline-code) {
+                background-color: ${correct
+                  ? 'var(--green-200)'
+                  : 'var(--red-200)'};
+
+                color: ${correct ? 'var(--green-100)' : 'var(--red-100)'};
+              }
 
               @media ${media.mediumDevice} {
                 font-size: ${pxToRem(20)};

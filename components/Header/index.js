@@ -38,7 +38,6 @@ function Header() {
     const localUserData = JSON.parse(localStorage.getItem('userData'));
     console.log(localUserData);
     if (localUserData && localUserData !== userData) {
-      console.log('paso if');
       dispatch(setUserAction(localUserData));
     }
   }, []);
@@ -47,13 +46,11 @@ function Header() {
     const localUserData = JSON.parse(localStorage.getItem('userData'));
 
     if (data !== userData && !_.isEqual(data, localUserData)) {
-      console.log('data set');
       dispatch(setUserAction(_.isEqual(data, undefined) ? null : data));
     }
   }, [data]);
 
   function handleMenuToggle(e) {
-    console.log(e);
     setMenuVisible(!menuVisible);
   }
 
