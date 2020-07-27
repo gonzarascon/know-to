@@ -34,7 +34,7 @@ function Home({ courseTitle, courseDescription, coursePortada, totalClasses }) {
     if (userProgress && totalClasses) {
       console.log(userProgress);
       const totalProgressPercentage =
-        (userProgress.completedClasses * 100) / totalClasses;
+        (userProgress.approvedClasses * 100) / totalClasses;
 
       setUserFinalPoints(Math.round(totalProgressPercentage));
     }

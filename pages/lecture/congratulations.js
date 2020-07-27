@@ -33,7 +33,7 @@ function Congratulations() {
   useEffect(() => {
     if (userProgress && totalClasses) {
       const totalProgressPercentage =
-        (userProgress.completedClasses * 100) / totalClasses;
+        (userProgress.approvedClasses * 100) / totalClasses;
 
       setUserFinalPoints(Math.round(totalProgressPercentage));
     }
