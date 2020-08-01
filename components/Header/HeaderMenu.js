@@ -19,6 +19,7 @@ import {
   useProfileConfigurationDispatch,
   setProfileConfigurationAction,
 } from 'contexts/ProfileConfigurationContext';
+import Axios from 'axios';
 
 function HeaderMenu({ toggleMenu, boxOffset }) {
   const dispatch = useUserDispatch();
@@ -51,10 +52,12 @@ function HeaderMenu({ toggleMenu, boxOffset }) {
     };
   }, []);
 
-  function handleLogout() {
+  async function handleLogout() {
     destroyCookie(null, 'auth_token');
     localStorage.setItem('userData', null);
     dispatch(setUserAction(null));
+
+    await Axios.get('/api/auth/remove_auth');
 
     if (router.pathname !== '/') {
       router.push('/');

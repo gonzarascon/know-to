@@ -13,19 +13,33 @@ import { data as DocumentData } from 'constants';
 import { Layout, LectureContainer } from 'containers';
 
 import { useUserState } from 'contexts/UserContext';
+import { parse } from 'path';
 
 const { BASE_URL } = DocumentData;
 
-export async function getServerSideProps() {
+export async function getServerSideProps(ctx) {
+  const { auth_token } = parseCookies(ctx);
+  const { id } = ctx.params;
+
+  const user = await fetch(`${BASE_URL}/users/me`, {
+    headers: new Headers({
+      Authorization: `Bearer ${auth_token}`,
+    }),
+  }).then(async (response) => await response.json());
+
+  const checkpoint = user.checkpoint ? parseInt(user.checkpoint) : 0;
+
   const totalLectures = await getTotalLectures();
+
   return {
     props: {
       totalLectures,
+      checkpoint,
+      actualLecture: parseInt(id),
     },
   };
 }
-
-function LectureId({ totalLectures }) {
+function LectureId({ totalLectures, checkpoint, actualLecture }) {
   const [lectureData, setLectureData] = useState(null);
   const [lecutreQuestions, setLectureQuestions] = useState(null);
   const [isCompleted, setIsCompleted] = useState(null);
@@ -64,6 +78,12 @@ function LectureId({ totalLectures }) {
         }
       : null
   );
+
+  useEffect(() => {
+    if (checkpoint > parseInt(actualLecture)) {
+      router.push(`/lecture/${checkpoint}`);
+    }
+  }, []);
 
   useEffect(() => {
     if (userClase) {

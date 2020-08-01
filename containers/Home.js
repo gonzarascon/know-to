@@ -5,8 +5,9 @@ import { parseCookies } from 'nookies';
 
 import { media, data as DocumentData } from 'constants';
 import { Media } from 'utils/mediaRender';
-
 import { useRequest } from 'utils/helpers';
+
+import { updateUserData } from 'lib/api/user';
 
 import { CheckCircleOutlined } from '@ant-design/icons';
 import { useUserState } from 'contexts/UserContext';
@@ -55,9 +56,21 @@ function Home({ courseTitle, courseDescription, coursePortada, totalClasses }) {
     setIsLoading(false);
   }, [userData]);
 
-  function handleStartClick() {
+  async function handleStartClick() {
     if (userData && isCompleted === false) {
-      const lastClass = userData.checkpoint === null ? 1 : userData.checkpoint;
+      const lastClass =
+        userData.checkpoint === null ||
+        userData.checkpoint === '0' ||
+        userData.checkpoint === 0
+          ? 1
+          : userData.checkpoint;
+
+      const newUserData = {
+        ...userData,
+        checkpoint: lastClass,
+      };
+
+      await updateUserData({ userData: newUserData });
 
       Router.push(`/lecture/${lastClass}`);
     } else {
