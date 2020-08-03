@@ -80,7 +80,7 @@ function LectureId({ totalLectures, checkpoint, actualLecture }) {
   );
 
   useEffect(() => {
-    if (checkpoint > parseInt(actualLecture)) {
+    if (checkpoint < parseInt(actualLecture)) {
       router.push(`/lecture/${checkpoint}`);
     }
   }, []);
@@ -92,9 +92,9 @@ function LectureId({ totalLectures, checkpoint, actualLecture }) {
   }, [userClase]);
 
   useEffect(() => {
-    if (_.isArray(data) && _.isEmpty(data)) {
-      router.push('/404');
-    }
+    // if (_.isArray(data) && _.isEmpty(data)) {
+    //   router.push('/404');
+    // }
 
     if (!_.isEmpty(data) && !_.isEqual(data[0], lectureData)) {
       setLectureData(data[0]);
