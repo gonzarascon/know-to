@@ -73,6 +73,8 @@ function Lecture({
     const { id } = router.query;
     const newLectureNumber = parseInt(id) + 1;
 
+    console.log(isCompleted);
+
     if (!isCompleted) {
       await setLectureCompleted({
         lecture_number: id,
@@ -94,7 +96,11 @@ function Lecture({
         }
       });
     } else {
-      router.push(`/lecture/${newLectureNumber}`);
+      if (newLectureNumber > totalClasses) {
+        router.push(`/lecture/congratulations`);
+      } else {
+        router.push(`/lecture/${newLectureNumber}`);
+      }
     }
   }
 
